@@ -28,3 +28,54 @@ public void ts(int u)
     tsStack.push(u);
 }
 ```
+
+
+#Modified BFS algorithm (or Kahn's algorithm)
+1. Create a inDegrees[]. Initially all the nodes/vertices have 0 in-degrees.
+2. Iterate the graph[][], and initialize the inDegrees[].
+3. Create a LinkedList<Integer> queue, and add all the nodes with 0 in-degrees.
+4. While the queue is not empty
+    4.1. Remove a node from the queue.
+    4.2. Reduce the inDegrees of all the neighbouring nodes connected.
+    4.3. If the inDegrees of the neighbouring node is equal to zero, then add to the queue.
+    4.4. The order in which the nodes are added to the queue is the topological sort. 
+
+```
+int inDegrees[] = new int[NODES];
+for(int i = 0; i<NODES; i++)
+{
+    for(int j = 0; j<NODES; j++)
+    {
+        if(g[i][j])
+        {
+            inDegrees[j]++;
+        }
+    }
+}
+
+LinkedList<Integer> queue = new LinkedList<Integer>();
+for(int i = 0; i<NODES; i++)
+{
+    if(inDegrees[i] == 0)
+    {
+        queue.add(i);
+    }
+}
+
+
+while(!queue.isEmpty())
+{
+    int u = queue.pollFirst();
+    for(int i = 0; i<NODES; i++)
+    {
+        if(g[u][i])
+        {
+            inDegrees[i]--;
+            if(inDegrees[i] == 0)
+            {
+                queue.add(i);
+            }
+        }
+    }
+}
+```
